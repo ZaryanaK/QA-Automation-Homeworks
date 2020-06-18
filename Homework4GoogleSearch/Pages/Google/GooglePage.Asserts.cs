@@ -19,5 +19,11 @@ namespace Homework4GoogleSearch.Pages
             string currUrl = Driver.Url;
             Assert.AreEqual("https://www.selenium.dev/", currUrl);
         }
+
+        public void Assert_ScreenshotWrongAssert()
+        {
+            string actualTitle = FirstResultAfterSearch.Text;
+            Assert.AreEqual("abc", actualTitle);
+        }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Homework4GoogleSearch.Pages;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Homework4GoogleSearch.Tests.GoogleTests
@@ -37,9 +40,24 @@ namespace Homework4GoogleSearch.Tests.GoogleTests
             _googlePage.AssertRightUrlAfterClickOnFirstResult();
         }
 
+        [Test]
+        public void ScreenshotTest()
+        {
+            _googlePage.PerformGoogleSearch();
+
+            _googlePage.Assert_ScreenshotWrongAssert();
+        }
+
         [TearDown]
         public void TearDown()
         {
+            if (TestContext.CurrentContext.Result.Outcome != ResultState.Success)
+            {
+                string dirPath = Path.GetFullPath(@"..\..\..\", Directory.GetCurrentDirectory());
+                var screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
+                screenshot.SaveAsFile($"{dirPath}\\Screenshots\\{TestContext.CurrentContext.Test.FullName}.png", ScreenshotImageFormat.Png);
+            }
+
             Driver.Quit();
         }
     }
